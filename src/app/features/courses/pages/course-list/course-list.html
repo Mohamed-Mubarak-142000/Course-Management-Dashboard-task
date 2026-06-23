@@ -5,7 +5,6 @@
     title="Courses Management"
     [showBack]="false"
     [actions]="getToolbarActions()"
-    (action)="onToolbarAction($event)"
   ></app-toolbar>
 
   <!-- Stats Cards -->
@@ -94,7 +93,7 @@
             Clear Filters
           </button>
         } @else {
-          <button mat-raised-button color="primary" (click)="onToolbarAction('add')">
+          <button mat-raised-button color="primary" (click)="goToAdd()">
             <mat-icon>add</mat-icon>
             Add Course
           </button>

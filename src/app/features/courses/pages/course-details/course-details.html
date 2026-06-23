@@ -5,8 +5,7 @@
     title="Course Details"
     [showBack]="true"
     [actions]="getToolbarActions()"
-    (action)="onToolbarAction($event)"
-    (back)="onToolbarAction('back')"
+    (back)="goBack()"
   ></app-toolbar>
 
   <!-- LOADING -->
@@ -61,9 +60,7 @@
           </div>
         </div>
 
-        <!-- <mat-chip [class]="getStatusClass(course()?.status || '')" [disabled]="true">
-            {{ course()?.status }}
-          </mat-chip> -->
+        <!-- Status -->
         <div class="info-item">
           <div class="info-icon">
             <mat-icon color="primary">check_circle</mat-icon>
@@ -129,7 +126,7 @@
       <mat-icon class="empty-icon">info_outline</mat-icon>
       <h3>No Data Available</h3>
       <p>The course information could not be found.</p>
-      <button mat-button color="primary" (click)="onToolbarAction('back')">
+      <button mat-button color="primary" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
         Go Back
       </button>

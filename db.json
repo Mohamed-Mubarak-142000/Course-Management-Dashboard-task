@@ -7,7 +7,7 @@
       "category": "Frontend",
       "duration": 20,
       "price": 1500,
-      "status": "Active",
+      "status": "archived",
       "description": "Learn Angular from scratchdddd",
       "createdDate": "2026-06-01"
     },
@@ -18,7 +18,7 @@
       "category": "Backend",
       "duration": 15,
       "price": 2000,
-      "status": "Draft",
+      "status": "draft",
       "description": "Advanced NestJS Conceptsdddd",
       "createdDate": "2026-06-10"
     }

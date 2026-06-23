@@ -13,5 +13,5 @@ export interface Course {
   price: number;
   status: CourseStatus;
   description?: string;
-  createdDate: string;
+  createdDate?: string;
 }

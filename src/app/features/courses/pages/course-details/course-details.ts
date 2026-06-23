@@ -41,13 +41,12 @@ export class CourseDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private courseService = inject(CourseService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
 
   course = signal<Course | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
-
-  dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
 
   ngOnInit() {
     this.loadCourse();
@@ -82,47 +81,60 @@ export class CourseDetails implements OnInit {
     });
   }
 
-  // Toolbar actions
-  onToolbarAction(action: string) {
-    switch (action) {
-      case 'back':
-        this.router.navigate(['/courses']);
-        break;
-      case 'edit':
-        const id = this.course()?.id;
-        if (id) {
-          this.router.navigate(['/courses/edit', id]);
-        }
-        break;
-      case 'delete':
-        const courseId = this.course()?.id;
-        if (courseId) {
-          this.deleteCourse(courseId);
-        }
-        break;
+  // Toolbar actions with direct action handlers
+  getToolbarActions(): ToolbarAction[] {
+    return [
+      {
+        id: 'edit',
+        label: 'Edit',
+        icon: 'edit',
+        color: 'primary',
+        type: 'raised',
+        action: () => this.editCourse(),
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: 'delete',
+        color: 'warn',
+        type: 'stroked',
+        action: () => this.deleteCourse(),
+      },
+    ];
+  }
 
-      default:
-        console.log('Unknown action:', action);
+  editCourse() {
+    const id = this.course()?.id;
+    if (id) {
+      this.router.navigate(['/courses/edit', id]);
+    } else {
+      this.showMessage('Course ID not found', 'error');
     }
   }
 
-  deleteCourse(id: number) {
+  deleteCourse() {
+    const courseId = this.course()?.id;
+    if (!courseId) {
+      this.showMessage('Course ID not found', 'error');
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '420px',
       data: {
-        title: 'حذف الكورس',
-        message: 'هل أنت متأكد من حذف هذا الكورس؟',
-        confirmText: 'نعم، احذف',
-        cancelText: 'إلغاء',
+        title: 'Delete Course',
+        message: `Are you sure you want to delete "${this.course()?.courseName}"? This action cannot be undone.`,
+        confirmText: 'Yes, Delete',
+        cancelText: 'Cancel',
       } as ConfirmDialogData,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.courseService.deleteCourse(id).subscribe({
+        this.courseService.deleteCourse(courseId).subscribe({
           next: () => {
-            this.router.navigate(['/courses']);
             this.showMessage('Course deleted successfully', 'success');
+            this.router.navigate(['/courses']);
           },
           error: (err) => {
             console.error('Error deleting course:', err);
@@ -133,7 +145,15 @@ export class CourseDetails implements OnInit {
     });
   }
 
-  private showMessage(message: string, type: 'success' | 'error' | 'warning') {
+  goBack() {
+    this.router.navigate(['/courses']);
+  }
+
+  retryLoading() {
+    this.loadCourse();
+  }
+
+  private showMessage(message: string, type: 'success' | 'error' | 'warning' | 'info') {
     const panelClass = `snackbar-${type}`;
     this.snackBar.open(message, 'Close', {
       duration: 3000,
@@ -141,9 +161,6 @@ export class CourseDetails implements OnInit {
       verticalPosition: 'top',
       panelClass: [panelClass],
     });
-  }
-  retryLoading() {
-    this.loadCourse();
   }
 
   // Computed states
@@ -153,24 +170,5 @@ export class CourseDetails implements OnInit {
 
   getStatusClass(status: string): string {
     return `status-${status?.toLowerCase() || 'unknown'}`;
-  }
-
-  getToolbarActions(): ToolbarAction[] {
-    return [
-      {
-        id: 'edit',
-        label: 'Edit',
-        icon: 'edit',
-        color: 'primary',
-        type: 'raised',
-      },
-      {
-        id: 'delete',
-        label: 'Delete',
-        icon: 'delete',
-        color: 'warn',
-        type: 'stroked',
-      },
-    ];
   }
 }

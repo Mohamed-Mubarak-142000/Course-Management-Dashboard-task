@@ -39,6 +39,7 @@ export class CourseList implements OnInit {
   router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
+
   // Signals
   courses = signal<Course[]>([]);
   loading = signal(false);
@@ -72,7 +73,7 @@ export class CourseList implements OnInit {
     this.loadCourses();
   }
 
-  // Toolbar actions
+  // Toolbar actions with proper action handlers
   getToolbarActions(): ToolbarAction[] {
     return [
       {
@@ -81,6 +82,7 @@ export class CourseList implements OnInit {
         icon: 'add',
         color: 'primary',
         type: 'raised',
+        action: () => this.goToAdd(), // Direct action handler
       },
       {
         id: 'refresh',
@@ -88,6 +90,7 @@ export class CourseList implements OnInit {
         icon: 'refresh',
         color: 'accent',
         type: 'stroked',
+        action: () => this.loadCourses(),
       },
       {
         id: 'export',
@@ -95,25 +98,9 @@ export class CourseList implements OnInit {
         icon: 'download',
         color: 'primary',
         type: 'stroked',
+        action: () => this.exportCourses(),
       },
     ];
-  }
-
-  // Handle toolbar actions
-  onToolbarAction(action: string) {
-    switch (action) {
-      case 'add':
-        this.goToAdd();
-        break;
-      case 'refresh':
-        this.loadCourses();
-        break;
-      case 'export':
-        this.exportCourses();
-        break;
-      default:
-        console.log('Unknown action:', action);
-    }
   }
 
   loadCourses() {

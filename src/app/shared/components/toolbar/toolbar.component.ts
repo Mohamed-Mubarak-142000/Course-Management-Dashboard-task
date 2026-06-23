@@ -1,6 +1,5 @@
-// toolbar.component.ts
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -14,6 +13,7 @@ export interface ToolbarAction {
   type?: 'raised' | 'stroked' | 'flat' | 'icon';
   disabled?: boolean;
   tooltip?: string;
+  action?: () => void;
 }
 
 @Component({
@@ -28,19 +28,14 @@ export class Toolbar {
   @Input() showBack = false;
   @Input() actions: ToolbarAction[] = [];
   @Input() showMenu = false;
-
-  @Output() action = new EventEmitter<string>();
+  location = inject(Location);
   @Output() back = new EventEmitter<void>();
 
-  onAction(actionId: string) {
-    this.action.emit(actionId);
+  onAction(action: ToolbarAction): void {
+    action.action?.();
   }
 
-  onBack() {
-    this.back.emit();
-  }
-
-  getButtonType(type?: string): string {
-    return type || 'flat';
+  onBack(): void {
+    this.location.back();
   }
 }

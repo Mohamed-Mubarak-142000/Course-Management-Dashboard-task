@@ -5,8 +5,7 @@
     title="Add New Course"
     [showBack]="true"
     [actions]="getToolbarActions()"
-    (action)="onToolbarAction($event)"
-    (back)="onToolbarAction('back')"
+    (back)="goBack()"
   ></app-toolbar>
 
   <!-- Course Form -->

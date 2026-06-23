@@ -1,39 +1,47 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../../services/course';
-import { Toolbar } from '../../../../shared/components/toolbar/toolbar.component';
-import { Course } from '../../models/course.model';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CourseService } from '../../services/course';
+import { Toolbar, ToolbarAction } from '../../../../shared/components/toolbar/toolbar.component';
+import { Course } from '../../models/course.model';
 import { CourseForm } from '../../components/course-form/course.form';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-edit',
   standalone: true,
-  imports: [CommonModule, Toolbar, CourseForm],
+  imports: [
+    CommonModule,
+    Toolbar,
+    CourseForm,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+  ],
   templateUrl: './edit-course.html',
+  styleUrls: ['./edit-course.css'],
 })
 export class CourseEdit implements OnInit {
   @ViewChild('formRef') formComponent!: CourseForm;
+
+  private courseService = inject(CourseService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private snackBar = inject(MatSnackBar);
 
   course?: Course;
   courseId!: number;
   isLoading = true;
   error: string | null = null;
 
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar,
-  ) {}
-
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (!id) {
-      this.error = 'معرف الدورة غير موجود';
+      this.error = 'Course ID not found';
       this.isLoading = false;
       return;
     }
@@ -41,12 +49,42 @@ export class CourseEdit implements OnInit {
     this.courseId = Number(id);
 
     if (isNaN(this.courseId)) {
-      this.error = 'معرف الدورة غير صحيح';
+      this.error = 'Invalid course ID';
       this.isLoading = false;
       return;
     }
 
     this.loadCourse();
+  }
+
+  // Toolbar actions with direct action handlers
+  getToolbarActions(): ToolbarAction[] {
+    return [
+      {
+        id: 'save',
+        label: 'Save Changes',
+        icon: 'save',
+        color: 'primary',
+        type: 'raised',
+        action: () => this.triggerSave(),
+        tooltip: 'Save course changes',
+        disabled:
+          this.isLoading ||
+          !!this.error ||
+          !this.formComponent?.isValid?.() ||
+          !this.formComponent?.hasUnsavedChanges?.(),
+      },
+      {
+        id: 'reset',
+        label: 'Reset',
+        icon: 'refresh',
+        color: 'warn',
+        type: 'stroked',
+        action: () => this.resetForm(),
+        tooltip: 'Reset form to original values',
+        disabled: this.isLoading || !!this.error || !this.formComponent?.hasUnsavedChanges?.(),
+      },
+    ];
   }
 
   loadCourse() {
@@ -55,16 +93,17 @@ export class CourseEdit implements OnInit {
 
     this.courseService.getCourseById(this.courseId).subscribe({
       next: (data) => {
-        console.log('Course data received:', data); // للتأكد من وصول البيانات
+        console.log('Course data received:', data);
         this.course = data;
         this.isLoading = false;
-        this.cdr.detectChanges(); // فرض تحديث العرض
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading course:', error);
-        this.error = 'حدث خطأ أثناء تحميل بيانات الدورة';
+        this.error = 'An error occurred while loading course data';
         this.isLoading = false;
         this.cdr.detectChanges();
+        this.showMessage('Failed to load course data', 'error');
       },
     });
   }
@@ -75,12 +114,13 @@ export class CourseEdit implements OnInit {
 
     this.courseService.updateCourse(this.courseId, course).subscribe({
       next: () => {
-        this.router.navigate(['/courses']);
+        this.isLoading = false;
         this.showMessage('Course updated successfully', 'success');
+        this.router.navigate(['/courses']);
       },
       error: (error) => {
         console.error('Error updating course:', error);
-        this.error = 'حدث خطأ أثناء حفظ التغييرات';
+        this.error = 'An error occurred while saving changes';
         this.isLoading = false;
         this.cdr.detectChanges();
         this.showMessage('Failed to update course', 'error');
@@ -89,16 +129,48 @@ export class CourseEdit implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/courses']);
+    // Check if form has unsaved changes
+    if (this.formComponent?.hasUnsavedChanges?.()) {
+      if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        this.router.navigate(['/courses']);
+      }
+    } else {
+      this.router.navigate(['/courses']);
+    }
   }
 
   triggerSave() {
     if (this.formComponent) {
-      this.formComponent.submit();
+      // Check if form is valid before submitting
+      if (this.formComponent.isValid?.()) {
+        this.formComponent.submit();
+      } else {
+        this.showMessage('Please fill in all required fields correctly', 'warning');
+        // Trigger validation display
+        this.formComponent.markAllAsTouched?.();
+      }
+    } else {
+      this.showMessage('Form not ready', 'warning');
     }
   }
 
-  private showMessage(message: string, type: 'success' | 'error' | 'warning') {
+  resetForm() {
+    if (this.formComponent?.hasUnsavedChanges?.()) {
+      if (confirm('Are you sure you want to reset the form? All changes will be lost.')) {
+        this.formComponent.resetForm?.();
+        this.showMessage('Form has been reset to original values', 'info');
+      }
+    } else {
+      this.formComponent?.resetForm?.();
+      this.showMessage('Form has been reset to original values', 'info');
+    }
+  }
+
+  retryLoading() {
+    this.loadCourse();
+  }
+
+  private showMessage(message: string, type: 'success' | 'error' | 'warning' | 'info') {
     const panelClass = `snackbar-${type}`;
     this.snackBar.open(message, 'Close', {
       duration: 3000,
