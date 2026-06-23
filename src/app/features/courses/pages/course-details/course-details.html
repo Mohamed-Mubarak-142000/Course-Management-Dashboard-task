@@ -10,28 +10,18 @@
 
   <!-- LOADING -->
   @if (showLoadingMessage()) {
-    <mat-card class="loading-container">
-      <div class="loading-content">
-        <mat-spinner diameter="48" color="primary"></mat-spinner>
-        <h3 class="loading-text">Loading Course Details</h3>
-        <p class="loading-sub-text">Please wait while we fetch the data</p>
-      </div>
-    </mat-card>
+    <app-loading
+      title="Loading Course Details"
+      subtitle="Fetching data from server..."
+    ></app-loading>
   }
 
   <!-- ERROR -->
   @if (hasError()) {
-    <mat-card class="error-container">
-      <div class="error-content">
-        <mat-icon color="warn" class="error-icon">error_outline</mat-icon>
-        <h3 class="error-title">Something went wrong</h3>
-        <p class="error-text">{{ error() }}</p>
-        <button mat-raised-button color="primary" (click)="retryLoading()">
-          <mat-icon>refresh</mat-icon>
-          Try Again
-        </button>
-      </div>
-    </mat-card>
+    <app-error-state
+      [message]="error() ?? 'An unexpected error occurred. Please try again later.'"
+      (retry)="retryLoading()"
+    ></app-error-state>
   }
 
   <!-- COURSE DATA -->
@@ -49,71 +39,46 @@
 
       <!-- Course Info Grid -->
       <div class="info-grid">
-        <!-- Instructor -->
-        <div class="info-item">
-          <div class="info-icon">
-            <mat-icon color="primary">person</mat-icon>
-          </div>
-          <div class="info-content">
-            <span class="info-label">Instructor</span>
-            <span class="info-value">{{ course()?.instructorName }}</span>
-          </div>
-        </div>
+        <app-info-item
+          icon="person"
+          label="Instructor"
+          [value]="course()?.instructorName"
+        ></app-info-item>
 
-        <!-- Status -->
-        <div class="info-item">
-          <div class="info-icon">
-            <mat-icon color="primary">check_circle</mat-icon>
-          </div>
-          <div class="info-content">
-            <span class="info-label">Status</span>
-            <mat-chip [class]="getStatusClass(course()?.status || '')" [disabled]="true">
-              {{ course()?.status }}
-            </mat-chip>
-          </div>
-        </div>
+        <app-info-item
+          icon="check_circle"
+          label="Status"
+          [value]="course()?.status"
+        ></app-info-item>
 
         <!-- Category -->
-        <div class="info-item">
-          <div class="info-icon">
-            <mat-icon color="primary">category</mat-icon>
-          </div>
-          <div class="info-content">
-            <span class="info-label">Category</span>
-            <span class="info-value">{{ course()?.category }}</span>
-          </div>
-        </div>
+        <app-info-item
+          icon="category"
+          label="Category"
+          [value]="course()?.category"
+        ></app-info-item>
 
         <!-- Duration -->
-        <div class="info-item">
-          <div class="info-icon">
-            <mat-icon color="primary">schedule</mat-icon>
-          </div>
-          <div class="info-content">
-            <span class="info-label">Duration</span>
-            <span class="info-value">{{ course()?.duration }} hours</span>
-          </div>
-        </div>
+        <app-info-item
+          icon="schedule"
+          label="Duration"
+          [value]="course()?.duration + ' hours'"
+        ></app-info-item>
 
         <!-- Created Date -->
-        <div class="info-item">
-          <div class="info-icon">
-            <mat-icon color="primary">event</mat-icon>
-          </div>
-          <div class="info-content">
-            <span class="info-label">Created</span>
-            <span class="info-value">{{ course()?.createdDate | date: 'mediumDate' }}</span>
-          </div>
-        </div>
+        <app-info-item
+          icon="event"
+          label="Created"
+          [value]="course()?.createdDate | date: 'mediumDate'"
+        ></app-info-item>
       </div>
-
       <!-- Description -->
       <div class="description-section">
         <h3>
           <mat-icon color="primary">description</mat-icon>
           Description
         </h3>
-        <p class="description-text">
+        <p class="description-text px-6">
           {{ course()?.description || 'No description available for this course.' }}
         </p>
       </div>
@@ -122,14 +87,12 @@
 
   <!-- EMPTY -->
   @if (!loading() && !course() && !error()) {
-    <mat-card class="empty-container">
-      <mat-icon class="empty-icon">info_outline</mat-icon>
-      <h3>No Data Available</h3>
-      <p>The course information could not be found.</p>
-      <button mat-button color="primary" (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-        Go Back
-      </button>
-    </mat-card>
+    <app-empty-state
+      icon="info_outline"
+      title="No Data Available"
+      message="The course information could not be found."
+      buttonText="Go Back"
+      (action)="goBack()"
+    ></app-empty-state>
   }
 </div>

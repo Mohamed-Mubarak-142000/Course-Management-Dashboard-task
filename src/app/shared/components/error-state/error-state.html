@@ -1,0 +1,18 @@
+<mat-card class="error-container">
+  <div class="error-content">
+    <mat-icon color="warn" class="error-icon"> error_outline </mat-icon>
+
+    <h3 class="error-title">
+      {{ title }}
+    </h3>
+
+    <p class="error-text">
+      {{ message }}
+    </p>
+
+    <button mat-raised-button color="primary" (click)="onRetry()">
+      <mat-icon>refresh</mat-icon>
+      {{ buttonText }}
+    </button>
+  </div>
+</mat-card>

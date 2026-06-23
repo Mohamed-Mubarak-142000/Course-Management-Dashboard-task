@@ -9,45 +9,35 @@
 
   <!-- Stats Cards -->
   <div class="stats-container">
-    <div class="stat-card">
-      <div class="stat-icon total">
-        <mat-icon>school</mat-icon>
-      </div>
-      <div class="stat-content">
-        <span class="stat-value">{{ totalCourses() }}</span>
-        <span class="stat-label">Total Courses</span>
-      </div>
-    </div>
+    <app-stat-card
+      icon="school"
+      label="Total Courses"
+      [value]="totalCourses()"
+      type="total"
+    ></app-stat-card>
 
-    <div class="stat-card">
-      <div class="stat-icon active">
-        <mat-icon>check_circle</mat-icon>
-      </div>
-      <div class="stat-content">
-        <span class="stat-value">{{ activeCourses() }}</span>
-        <span class="stat-label">Active</span>
-      </div>
-    </div>
+    <app-stat-card
+      icon="school"
+      label="Total Courses"
+      [value]="totalCourses()"
+      type="total"
+    ></app-stat-card>
 
-    <div class="stat-card">
-      <div class="stat-icon draft">
-        <mat-icon>edit</mat-icon>
-      </div>
-      <div class="stat-content">
-        <span class="stat-value">{{ draftCourses() }}</span>
-        <span class="stat-label">Draft</span>
-      </div>
-    </div>
+    <app-stat-card
+      icon="check_circle"
+      label="Active"
+      [value]="activeCourses()"
+      type="active"
+    ></app-stat-card>
 
-    <div class="stat-card">
-      <div class="stat-icon archived">
-        <mat-icon>archive</mat-icon>
-      </div>
-      <div class="stat-content">
-        <span class="stat-value">{{ archivedCourses() }}</span>
-        <span class="stat-label">Archived</span>
-      </div>
-    </div>
+    <app-stat-card icon="edit" label="Draft" [value]="draftCourses()" type="draft"></app-stat-card>
+
+    <app-stat-card
+      icon="archive"
+      label="Archived"
+      [value]="archivedCourses()"
+      type="archived"
+    ></app-stat-card>
   </div>
 
   <!-- Filter -->
@@ -60,10 +50,10 @@
 
   <!-- Loading -->
   @if (loading()) {
-    <div class="loading-container">
-      <mat-spinner diameter="48" color="primary"></mat-spinner>
-      <p class="loading-text">Loading courses...</p>
-    </div>
+    <app-loading
+      title="Loading Course Details"
+      subtitle="Fetching data from server..."
+    ></app-loading>
   } @else {
     <!-- Course Table -->
     @if (filteredCourses().length > 0) {
@@ -76,29 +66,17 @@
         ></app-course-table>
       </div>
     } @else {
-      <!-- Empty State -->
-      <div class="empty-container">
-        <mat-icon class="empty-icon">search_off</mat-icon>
-        <h3>No Courses Found</h3>
-        <p>
-          @if (searchTerm() || status()) {
-            No courses match your search criteria. Try adjusting your filters.
-          } @else {
-            No courses available. Start by adding your first course!
-          }
-        </p>
-        @if (searchTerm() || status()) {
-          <button mat-button color="primary" (click)="onSearch(''); onStatusChange('')">
-            <mat-icon>clear</mat-icon>
-            Clear Filters
-          </button>
-        } @else {
-          <button mat-raised-button color="primary" (click)="goToAdd()">
-            <mat-icon>add</mat-icon>
-            Add Course
-          </button>
-        }
-      </div>
+      <app-empty-state
+        icon="search_off"
+        [title]="searchTerm() || status() ? 'No Courses Found' : 'No Courses Yet'"
+        [message]="
+          searchTerm() || status()
+            ? 'No courses match your search criteria. Try adjusting your filters.'
+            : 'Start by adding your first course!'
+        "
+        [buttonText]="searchTerm() || status() ? 'Clear Filters' : 'Add Course'"
+        (action)="searchTerm() || status() ? clearFilters() : goToAdd()"
+      ></app-empty-state>
     }
   }
 </div>

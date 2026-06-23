@@ -1,3 +1,4 @@
+import { InfoItemComponent } from './../../../../shared/components/info-item/info-item';
 // course-details.component.ts
 import { Component, signal, computed, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +20,10 @@ import {
   ConfirmDialogData,
 } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+// import { StatusChipComponent } from '../../../../shared/components/status-chip/status-chip';
+import { LoadingComponent } from '../../../../shared/components/loading/loading';
+import { ErrorStateComponent } from '../../../../shared/components/error-state/error-state';
+import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state';
 
 @Component({
   selector: 'app-course-details',
@@ -33,6 +38,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatChipsModule,
     MatTooltipModule,
     Toolbar,
+    // StatusChipComponent,
+    LoadingComponent,
+    ErrorStateComponent,
+    InfoItemComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './course-details.html',
   styleUrls: ['./course-details.css'],
@@ -167,8 +177,4 @@ export class CourseDetails implements OnInit {
   showLoadingMessage = computed(() => this.loading() && !this.course() && !this.error());
   hasError = computed(() => !!this.error());
   showCourseData = computed(() => !this.loading() && !!this.course() && !this.error());
-
-  getStatusClass(status: string): string {
-    return `status-${status?.toLowerCase() || 'unknown'}`;
-  }
 }

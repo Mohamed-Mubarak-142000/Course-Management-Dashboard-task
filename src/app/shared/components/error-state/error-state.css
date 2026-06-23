@@ -1,11 +1,11 @@
-.loading-container {
+.error-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px;
 }
 
-.loading-content {
+.error-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,14 +13,20 @@
   text-align: center;
 }
 
-.loading-text {
+.error-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+.error-title {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
   color: #1a2332;
 }
 
-.loading-sub-text {
+.error-text {
   margin: 0;
   font-size: 14px;
   color: #6b7280;

@@ -1,0 +1,32 @@
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  background: #eef2ff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}

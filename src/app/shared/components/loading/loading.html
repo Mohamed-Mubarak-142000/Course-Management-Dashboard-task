@@ -1,1 +1,24 @@
-<p>loading works!</p>
+<ng-container *ngIf="showCard; else plain">
+  <mat-card class="loading-container">
+    <div class="loading-content">
+      <mat-spinner [diameter]="diameter" color="primary"></mat-spinner>
+
+      <h3 class="loading-text">
+        {{ title }}
+      </h3>
+
+      <p class="loading-sub-text">
+        {{ subtitle }}
+      </p>
+    </div>
+  </mat-card>
+</ng-container>
+
+<ng-template #plain>
+  <div class="loading-content">
+    <mat-spinner [diameter]="diameter" color="primary"></mat-spinner>
+
+    <h3 class="loading-text">{{ title }}</h3>
+    <p class="loading-sub-text">{{ subtitle }}</p>
+  </div>
+</ng-template>

@@ -16,6 +16,9 @@ import {
   ConfirmDialog,
   ConfirmDialogData,
 } from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import { StatCardComponent } from '../../../../shared/components/stat-card/stat-card';
+import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state';
+import { LoadingComponent } from '../../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-course-list',
@@ -30,6 +33,9 @@ import {
     CourseTableComponent,
     Toolbar,
     MatIconModule,
+    StatCardComponent,
+    EmptyStateComponent,
+    LoadingComponent,
   ],
   templateUrl: './course-list.html',
   styleUrls: ['./course-list.css'],
@@ -189,6 +195,11 @@ export class CourseList implements OnInit {
     window.URL.revokeObjectURL(url);
 
     this.showMessage(`Exported ${courses.length} courses successfully`, 'success');
+  }
+
+  clearFilters() {
+    this.searchTerm.set('');
+    this.status.set('');
   }
 
   private showMessage(message: string, type: 'success' | 'error' | 'warning') {

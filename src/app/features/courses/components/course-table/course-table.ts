@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Course } from '../../models/course.model';
+import { StatusChipComponent } from '../../../../shared/components/status-chip/status-chip';
 
 @Component({
   selector: 'app-course-table',
@@ -19,6 +20,7 @@ import { Course } from '../../models/course.model';
     MatIconModule,
     MatChipsModule,
     MatTooltipModule,
+    StatusChipComponent,
   ],
   templateUrl: './course-table.html',
   styleUrls: ['./course-table.css'],

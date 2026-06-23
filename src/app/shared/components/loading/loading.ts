@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-loading',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatProgressSpinnerModule],
   templateUrl: './loading.html',
-  styleUrl: './loading.css',
+  styleUrls: ['./loading.css'],
 })
-export class Loading {}
+export class LoadingComponent {
+  @Input() title = 'Loading...';
+  @Input() subtitle = 'Please wait...';
+  @Input() diameter = 48;
+  @Input() showCard = true;
+}

@@ -5,21 +5,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-empty-state',
+  selector: 'app-error-state',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
-  templateUrl: './empty-state.html',
-  styleUrls: ['./empty-state.css'],
+  templateUrl: './error-state.html',
+  styleUrls: ['./error-state.css'],
 })
-export class EmptyStateComponent {
-  @Input() icon = 'info_outline';
-  @Input() title = 'No Data Available';
-  @Input() message = 'No information found.';
-  @Input() buttonText = 'Go Back';
+export class ErrorStateComponent {
+  @Input() title = 'Something went wrong';
+  @Input() message = 'An unexpected error occurred. Please try again later.';
+  @Input() buttonText = 'Try Again';
 
-  @Output() action = new EventEmitter<void>();
+  @Output() retry = new EventEmitter<void>();
 
-  onAction() {
-    this.action.emit();
+  onRetry() {
+    this.retry.emit();
   }
 }

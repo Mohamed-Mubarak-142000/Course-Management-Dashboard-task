@@ -1,0 +1,29 @@
+.status-chip {
+  width: 100px;
+  border-radius: 16px;
+  justify-content: center;
+  font-weight: 500;
+  text-transform: capitalize;
+  text-align: center;
+  padding: 4px 8px;
+}
+
+.status-active {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.status-draft {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.status-archived {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+.status-default {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+}
