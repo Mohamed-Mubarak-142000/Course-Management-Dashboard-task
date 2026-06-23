@@ -1,0 +1,138 @@
+<!-- course-details.html -->
+<div class="course-details-container">
+  <!-- Toolbar -->
+  <app-toolbar
+    title="Course Details"
+    [showBack]="true"
+    [actions]="getToolbarActions()"
+    (action)="onToolbarAction($event)"
+    (back)="onToolbarAction('back')"
+  ></app-toolbar>
+
+  <!-- LOADING -->
+  @if (showLoadingMessage()) {
+    <mat-card class="loading-container">
+      <div class="loading-content">
+        <mat-spinner diameter="48" color="primary"></mat-spinner>
+        <h3 class="loading-text">Loading Course Details</h3>
+        <p class="loading-sub-text">Please wait while we fetch the data</p>
+      </div>
+    </mat-card>
+  }
+
+  <!-- ERROR -->
+  @if (hasError()) {
+    <mat-card class="error-container">
+      <div class="error-content">
+        <mat-icon color="warn" class="error-icon">error_outline</mat-icon>
+        <h3 class="error-title">Something went wrong</h3>
+        <p class="error-text">{{ error() }}</p>
+        <button mat-raised-button color="primary" (click)="retryLoading()">
+          <mat-icon>refresh</mat-icon>
+          Try Again
+        </button>
+      </div>
+    </mat-card>
+  }
+
+  <!-- COURSE DATA -->
+  @if (showCourseData()) {
+    <mat-card class="course-content">
+      <!-- Course Header -->
+      <div class="course-header">
+        <div class="header-left">
+          <h1 class="course-title">{{ course()?.courseName }}</h1>
+        </div>
+        <div class="header-right">
+          <span class="course-price">{{ course()?.price | currency }}</span>
+        </div>
+      </div>
+
+      <!-- Course Info Grid -->
+      <div class="info-grid">
+        <!-- Instructor -->
+        <div class="info-item">
+          <div class="info-icon">
+            <mat-icon color="primary">person</mat-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-label">Instructor</span>
+            <span class="info-value">{{ course()?.instructorName }}</span>
+          </div>
+        </div>
+
+        <!-- <mat-chip [class]="getStatusClass(course()?.status || '')" [disabled]="true">
+            {{ course()?.status }}
+          </mat-chip> -->
+        <div class="info-item">
+          <div class="info-icon">
+            <mat-icon color="primary">check_circle</mat-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-label">Status</span>
+            <mat-chip [class]="getStatusClass(course()?.status || '')" [disabled]="true">
+              {{ course()?.status }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="info-item">
+          <div class="info-icon">
+            <mat-icon color="primary">category</mat-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-label">Category</span>
+            <span class="info-value">{{ course()?.category }}</span>
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="info-item">
+          <div class="info-icon">
+            <mat-icon color="primary">schedule</mat-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-label">Duration</span>
+            <span class="info-value">{{ course()?.duration }} hours</span>
+          </div>
+        </div>
+
+        <!-- Created Date -->
+        <div class="info-item">
+          <div class="info-icon">
+            <mat-icon color="primary">event</mat-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-label">Created</span>
+            <span class="info-value">{{ course()?.createdDate | date: 'mediumDate' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="description-section">
+        <h3>
+          <mat-icon color="primary">description</mat-icon>
+          Description
+        </h3>
+        <p class="description-text">
+          {{ course()?.description || 'No description available for this course.' }}
+        </p>
+      </div>
+    </mat-card>
+  }
+
+  <!-- EMPTY -->
+  @if (!loading() && !course() && !error()) {
+    <mat-card class="empty-container">
+      <mat-icon class="empty-icon">info_outline</mat-icon>
+      <h3>No Data Available</h3>
+      <p>The course information could not be found.</p>
+      <button mat-button color="primary" (click)="onToolbarAction('back')">
+        <mat-icon>arrow_back</mat-icon>
+        Go Back
+      </button>
+    </mat-card>
+  }
+</div>

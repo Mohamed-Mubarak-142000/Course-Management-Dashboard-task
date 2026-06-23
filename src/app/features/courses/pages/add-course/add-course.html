@@ -1,0 +1,16 @@
+<!-- add-course.html -->
+<div class="add-course-container">
+  <!-- Toolbar with flexible actions -->
+  <app-toolbar
+    title="Add New Course"
+    [showBack]="true"
+    [actions]="getToolbarActions()"
+    (action)="onToolbarAction($event)"
+    (back)="onToolbarAction('back')"
+  ></app-toolbar>
+
+  <!-- Course Form -->
+  <div class="form-wrapper">
+    <app-course-form #formRef (save)="onSave($event)"></app-course-form>
+  </div>
+</div>

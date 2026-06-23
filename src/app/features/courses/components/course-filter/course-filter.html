@@ -1,0 +1,24 @@
+<div class="grid md:grid-cols-2 gap-4 mb-6">
+  <mat-form-field appearance="outline">
+    <mat-label>Search Course</mat-label>
+
+    <input
+      matInput
+      [ngModel]="searchTerm()"
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Search by course name"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+
+    <mat-select [ngModel]="status()" (ngModelChange)="onStatusChange($event)">
+      <mat-option value="">All</mat-option>
+
+      <mat-option value="active">Active</mat-option>
+      <mat-option value="draft">Draft</mat-option>
+      <mat-option value="archived">Archived</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

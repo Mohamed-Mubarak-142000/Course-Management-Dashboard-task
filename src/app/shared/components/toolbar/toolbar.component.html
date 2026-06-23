@@ -1,0 +1,58 @@
+<!-- toolbar.component.html -->
+<div class="toolbar-container">
+  <div class="toolbar-left">
+    @if (showBack) {
+      <button mat-icon-button color="primary" (click)="onBack()" matTooltip="Go Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    }
+    <h1 class="toolbar-title">{{ title }}</h1>
+  </div>
+
+  <div class="toolbar-right">
+    <!-- Individual Actions -->
+    @for (action of actions; track action.id) {
+      @if (!action.icon || action.type !== 'icon') {
+        <button
+          mat-button
+          [color]="action.color || 'primary'"
+          [disabled]="action.disabled || false"
+          (click)="onAction(action.id)"
+          [matTooltip]="action.tooltip || ''"
+        >
+          @if (action.icon) {
+            <mat-icon>{{ action.icon }}</mat-icon>
+          }
+          {{ action.label }}
+        </button>
+      } @else {
+        <button
+          mat-icon-button
+          [color]="action.color || 'primary'"
+          [disabled]="action.disabled || false"
+          (click)="onAction(action.id)"
+          [matTooltip]="action.tooltip || action.label"
+        >
+          <mat-icon>{{ action.icon }}</mat-icon>
+        </button>
+      }
+    }
+
+    <!-- Menu for overflow -->
+    @if (showMenu) {
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        @for (action of actions; track action.id) {
+          <button mat-menu-item (click)="onAction(action.id)">
+            @if (action.icon) {
+              <mat-icon>{{ action.icon }}</mat-icon>
+            }
+            {{ action.label }}
+          </button>
+        }
+      </mat-menu>
+    }
+  </div>
+</div>

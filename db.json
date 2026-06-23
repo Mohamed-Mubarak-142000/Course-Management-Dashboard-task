@@ -1,0 +1,27 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "courseName": "Angular Fundamentals",
+      "instructorName": "Ahmed Ali",
+      "category": "Frontend",
+      "duration": 20,
+      "price": 1500,
+      "status": "Active",
+      "description": "Learn Angular from scratchdddd",
+      "createdDate": "2026-06-01"
+    },
+    {
+      "id": "2",
+      "courseName": "NestJS Advanced",
+      "instructorName": "Mohamed Hassan",
+      "category": "Backend",
+      "duration": 15,
+      "price": 2000,
+      "status": "Draft",
+      "description": "Advanced NestJS Conceptsdddd",
+      "createdDate": "2026-06-10"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

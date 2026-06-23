@@ -1,0 +1,69 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Course Name -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Course Name</mat-label>
+    <input matInput formControlName="courseName" />
+
+    <mat-error *ngIf="form.get('courseName')?.hasError('required')">
+      Course name is required
+    </mat-error>
+
+    <mat-error *ngIf="form.get('courseName')?.hasError('minlength')">
+      Minimum 3 characters
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Instructor -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Instructor Name</mat-label>
+    <input matInput formControlName="instructorName" />
+
+    <mat-error *ngIf="form.get('instructorName')?.hasError('required')">
+      Instructor is required
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Category -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Category</mat-label>
+    <input matInput formControlName="category" />
+  </mat-form-field>
+
+  <!-- Duration -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Duration (hours)</mat-label>
+    <input matInput type="number" formControlName="duration" />
+
+    <mat-error *ngIf="form.get('duration')?.hasError('min')"> Must be at least 1 hour </mat-error>
+  </mat-form-field>
+
+  <!-- Price -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" formControlName="price" />
+  </mat-form-field>
+
+  <!-- Status -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Status</mat-label>
+
+    <mat-select formControlName="status">
+      <mat-option [value]="CourseStatus.Active">Active</mat-option>
+      <mat-option [value]="CourseStatus.Draft">Draft</mat-option>
+      <mat-option [value]="CourseStatus.Archived">Archived</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Description -->
+  <mat-form-field appearance="outline" class="w-full md:col-span-2">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="4" formControlName="description"></textarea>
+  </mat-form-field>
+
+  <!-- Submit -->
+  <div class="md:col-span-2 flex justify-end">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      Save Course
+    </button>
+  </div>
+</form>
