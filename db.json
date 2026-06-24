@@ -8,7 +8,7 @@
       "duration": 20,
       "price": 1500,
       "status": "archived",
-      "description": "Learn Angular from scratchdddd",
+      "description": "Learn Angular from scratch",
       "createdDate": "2026-06-01"
     },
     {
@@ -19,9 +19,63 @@
       "duration": 15,
       "price": 2000,
       "status": "draft",
-      "description": "Advanced NestJS Conceptsdddd",
+      "description": "Advanced NestJS Concepts",
       "createdDate": "2026-06-10"
+    },
+    {
+      "id": "3",
+      "courseName": "React Basics",
+      "instructorName": "Sara Ali",
+      "category": "Frontend",
+      "duration": 18,
+      "price": 1200,
+      "status": "active",
+      "description": "Learn React from zero",
+      "createdDate": "2026-06-12"
+    },
+    {
+      "id": "4",
+      "courseName": "Node.js API Development",
+      "instructorName": "Omar Khaled",
+      "category": "Backend",
+      "duration": 22,
+      "price": 1800,
+      "status": "active",
+      "description": "Build REST APIs with Node.js",
+      "createdDate": "2026-06-15"
+    },
+    {
+      "id": "5",
+      "courseName": "TypeScript Mastery",
+      "instructorName": "Ali Hassan",
+      "category": "Programming",
+      "duration": 10,
+      "price": 900,
+      "status": "draft",
+      "description": "Deep dive into TypeScript",
+      "createdDate": "2026-06-18"
+    },
+    {
+      "id": "6",
+      "courseName": "MongoDB Essentials",
+      "instructorName": "Mona Ahmed",
+      "category": "Database",
+      "duration": 14,
+      "price": 1100,
+      "status": "active",
+      "description": "Learn MongoDB from scratch",
+      "createdDate": "2026-06-20"
+    },
+    {
+      "id": "7",
+      "courseName": "Full Stack Bootcamp",
+      "instructorName": "Khaled Mohamed",
+      "category": "Fullstack",
+      "duration": 40,
+      "price": 3000,
+      "status": "active",
+      "description": "Become a full stack developer",
+      "createdDate": "2026-06-22"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }
